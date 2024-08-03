@@ -1,14 +1,6 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local CoreGui = game:GetService("CoreGui")
 local localPlayer = Players.LocalPlayer
-
--- Функция для создания плавного градиента цвета в зависимости от здоровья
-local function createColorGradient(health)
-    local red = math.clamp(255 - (health * 2.55), 0, 255)
-    local green = math.clamp(health * 2.55, 0, 255)
-    return Color3.fromRGB(red, green, 0)
-end
 
 -- Функция для создания ESP для игрока
 local function createESP(player)
@@ -20,7 +12,14 @@ local function createESP(player)
 
         -- Удаление старых ESP элементов, если они есть
         for _, child in pairs(head:GetChildren()) do
-            if child:IsA("BillboardGui") then
+            if child:IsA("BillboardGui") and child.Name ~= "ESP" then
+                child:Destroy()
+            end
+        end
+
+        -- Удаление оригинального никнейма
+        for _, child in pairs(head:GetChildren()) do
+            if child:IsA("BillboardGui") and child.Name ~= "ESP" then
                 child:Destroy()
             end
         end
@@ -29,64 +28,58 @@ local function createESP(player)
         local billboard = Instance.new("BillboardGui", head)
         billboard.Name = "ESP"
         billboard.AlwaysOnTop = true
-        billboard.Size = UDim2.new(0, 100, 0, 50)
+        billboard.Size = UDim2.new(0, 150, 0, 40)  -- Размер биллборда
         billboard.StudsOffset = Vector3.new(0, 3, 0)
 
         local frame = Instance.new("Frame", billboard)
         frame.Size = UDim2.new(1, 0, 1, 0)
         frame.BackgroundTransparency = 1
 
-        local nameLabel = Instance.new("TextLabel", frame)
-        nameLabel.Size = UDim2.new(1, 0, 0.5, 0)
-        nameLabel.BackgroundTransparency = 1
-        nameLabel.Text = player.Name
-        nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        nameLabel.TextStrokeTransparency = 0
-        nameLabel.Font = Enum.Font.SourceSansBold
-        nameLabel.TextSize = 10 -- Начальный размер текста для никнейма
-        nameLabel.TextScaled = true
-        nameLabel.TextWrapped = true
+        -- Функция для создания текстовых меток
+        local function createTextLabel(text, textSize, position)
+            local label = Instance.new("TextLabel", frame)
+            label.Size = UDim2.new(1, 0, 0.5, 0)
+            label.Position = position
+            label.BackgroundTransparency = 1
+            label.Text = text
+            label.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Цвет текста
+            label.TextStrokeTransparency = 0.5
+            label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)  -- Черная обводка
+            label.Font = Enum.Font.SourceSansBold
+            label.TextSize = textSize
+            label.TextScaled = true
+            label.TextWrapped = true
+            return label
+        end
 
-        -- Уменьшение размера текста, если никнейм слишком длинный
-        nameLabel:GetPropertyChangedSignal("TextBounds"):Connect(function()
-            if nameLabel.TextBounds.X > nameLabel.AbsoluteSize.X then
-                nameLabel.TextSize = 10 * (nameLabel.AbsoluteSize.X / nameLabel.TextBounds.X)
-            end
-        end)
+        local nameLabel = createTextLabel(player.Name, 12, UDim2.new(0, 0, 0, 0))  -- Немного уменьшили размер
+        local healthLabel = createTextLabel("HP: 100", 14, UDim2.new(0, 0, 0.5, 0))  -- Немного уменьшили размер
 
-        local healthLabel = Instance.new("TextLabel", frame)
-        healthLabel.Size = UDim2.new(1, 0, 0.5, 0)
-        healthLabel.Position = UDim2.new(0, 0, 0.5, 0)
-        healthLabel.BackgroundTransparency = 1
-        healthLabel.TextStrokeTransparency = 0
-        healthLabel.Font = Enum.Font.SourceSansBold
-        healthLabel.TextSize = 10 -- Размер текста для здоровья
+        -- Функция для создания обводки вокруг персонажа
+        local function createHighlight(character)
+            local highlight = Instance.new("Highlight", character)
+            highlight.Name = "ESPHighlight"
+            highlight.FillColor = Color3.fromRGB(75, 0, 130)  -- Темно-фиолетовый цвет
+            highlight.FillTransparency = 0.3
+            highlight.OutlineColor = Color3.fromRGB(255, 255, 255)  -- Белая обводка
+            highlight.OutlineTransparency = 0.2
+            highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        end
 
-        -- Локальная переменная для хранения предыдущего значения здоровья
-        local lastHealth = -1
+        -- Создание обводки при добавлении персонажа
+        createHighlight(character)
 
+        -- Обновление текста здоровья и обводки
         local function updateESP()
             if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
                 local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
                 local health = humanoid.Health
+                healthLabel.Text = "HP: " .. math.floor(health)
 
-                -- Обновляем текст и цвет подсветки только при изменении здоровья
-                if math.floor(health) ~= lastHealth then
-                    healthLabel.Text = "HP: " .. math.floor(health)
-                    local color = createColorGradient(health)
-                    healthLabel.TextColor3 = color
-                    if character:FindFirstChild("Highlight") then
-                        character.Highlight.FillColor = color
-                    else
-                        local highlight = Instance.new("Highlight", character)
-                        highlight.Name = "Highlight"
-                        highlight.FillColor = color
-                        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-                        highlight.FillTransparency = 0.5
-                        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                        highlight.OutlineTransparency = 0
-                    end
-                    lastHealth = math.floor(health)
+                -- Обновление цвета и прозрачности Highlight
+                local highlight = character:FindFirstChild("ESPHighlight")
+                if highlight then
+                    highlight.FillColor = Color3.fromRGB(75, 0, 130)  -- Темно-фиолетовый цвет
                 end
             end
         end
