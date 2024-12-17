@@ -1,116 +1,205 @@
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local localPlayer = Players.LocalPlayer
+local a = Instance.new("ScreenGui")
+local b = Instance.new("Frame")
+local f = Instance.new("TextLabel")
+local g = Instance.new("TextBox")
+local h = Instance.new("TextButton")
+local i = Instance.new("UICorner")
+local j = Instance.new("UIStroke")
+local l = game:GetService("RunService")
+local LocalPlayer = game:GetService("Players").LocalPlayer
 
--- Функция для создания ESP для игрока
-local function createESP(player)
-    if player == localPlayer then return end
+a.Parent = LocalPlayer:WaitForChild("PlayerGui")
+a.Name = "MainMenuGui"
 
-    local function onCharacterAdded(character)
-        local head = character:WaitForChild("Head", 10)
-        if not head then return end
+i.CornerRadius = UDim.new(0, 12)
+j.Color = Color3.new(0, 0, 0)
+j.Thickness = 2
 
-        -- Удаление старых ESP элементов, если они есть
-        for _, child in pairs(head:GetChildren()) do
-            if child:IsA("BillboardGui") and child.Name ~= "ESP" then
-                child:Destroy()
-            end
-        end
+local function createButton(parent, position, size, text, bgColor, textColor)
+    local button = Instance.new("TextButton")
+    button.Parent = parent
+    button.Position = position
+    button.Size = size
+    button.Text = text
+    button.BackgroundColor3 = bgColor
+    button.TextColor3 = textColor
+    button.Font = Enum.Font.SourceSans
+    button.TextSize = 24
+    i:Clone().Parent = button
+    j:Clone().Parent = button
+    return button
+end
 
-        -- Удаление оригинального никнейма
-        for _, child in pairs(head:GetChildren()) do
-            if child:IsA("BillboardGui") and child.Name ~= "ESP" then
-                child:Destroy()
-            end
-        end
+b.Parent = a
+b.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+b.Position = UDim2.new(0.5, -200, 0.5, -200)
+b.Size = UDim2.new(0, 400, 0, 400)
+b.Visible = false
+b.BorderSizePixel = 0
+i:Clone().Parent = b
 
-        -- Создание надписей с именем и здоровьем
-        local billboard = Instance.new("BillboardGui", head)
-        billboard.Name = "ESP"
-        billboard.AlwaysOnTop = true
-        billboard.Size = UDim2.new(0, 150, 0, 40)  -- Размер биллборда
-        billboard.StudsOffset = Vector3.new(0, 3, 0)
+local c = createButton(a, UDim2.new(0, 0, 0, 0), UDim2.new(0, 100, 0, 50), "Menu", Color3.fromRGB(60, 60, 60), Color3.fromRGB(255, 255, 255))
+local d = createButton(b, UDim2.new(0.5, -50, 1, -40), UDim2.new(0, 100, 0, 30), "Close", Color3.fromRGB(220, 60, 60), Color3.fromRGB(255, 255, 255))
+local e = createButton(b, UDim2.new(0.5, -50, 0, 20), UDim2.new(0, 100, 0, 50), "Freeze", Color3.fromRGB(80, 80, 80), Color3.fromRGB(255, 255, 255))
 
-        local frame = Instance.new("Frame", billboard)
-        frame.Size = UDim2.new(1, 0, 1, 0)
-        frame.BackgroundTransparency = 1
+f.Parent = b
+f.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+f.Position = UDim2.new(0.1, 0, 0.2, 0)
+f.Size = UDim2.new(0.8, 0, 0, 30)
+f.Text = "Speed:"
+f.TextColor3 = Color3.fromRGB(255, 255, 255)
+f.Font = Enum.Font.SourceSans
+f.TextSize = 24
 
-        -- Функция для создания текстовых меток
-        local function createTextLabel(text, textSize, position)
-            local label = Instance.new("TextLabel", frame)
-            label.Size = UDim2.new(1, 0, 0.5, 0)
-            label.Position = position
-            label.BackgroundTransparency = 1
-            label.Text = text
-            label.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Цвет текста
-            label.TextStrokeTransparency = 0.5
-            label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)  -- Черная обводка
-            label.Font = Enum.Font.SourceSansBold
-            label.TextSize = textSize
-            label.TextScaled = true
-            label.TextWrapped = true
-            return label
-        end
+g.Parent = b
+g.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+g.Position = UDim2.new(0.1, 0, 0.3, 0)
+g.Size = UDim2.new(0.8, 0, 0, 30)
+g.Text = "16"
+g.ClearTextOnFocus = true
+g.PlaceholderText = "Enter Speed"
+g.TextColor3 = Color3.fromRGB(255, 255, 255)
+g.Font = Enum.Font.SourceSans
+g.TextSize = 24
+i:Clone().Parent = g
+j:Clone().Parent = g
 
-        local nameLabel = createTextLabel(player.Name, 12, UDim2.new(0, 0, 0, 0))  -- Немного уменьшили размер
-        local healthLabel = createTextLabel("HP: 100", 14, UDim2.new(0, 0, 0.5, 0))  -- Немного уменьшили размер
+local scrollingFrame = Instance.new("ScrollingFrame")
+scrollingFrame.Parent = b
+scrollingFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+scrollingFrame.Position = UDim2.new(0, 0, 0.5, 0)
+scrollingFrame.Size = UDim2.new(0, 350, 0, 160)
+scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 250)
+scrollingFrame.ScrollBarThickness = 10
+scrollingFrame.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Right
 
-        -- Функция для создания обводки вокруг персонажа
-        local function createHighlight(character)
-            local highlight = Instance.new("Highlight", character)
-            highlight.Name = "ESPHighlight"
-            highlight.FillColor = Color3.fromRGB(75, 0, 130)  -- Темно-фиолетовый цвет
-            highlight.FillTransparency = 0.3
-            highlight.OutlineColor = Color3.fromRGB(255, 255, 255)  -- Белая обводка
-            highlight.OutlineTransparency = 0.2
-            highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-        end
+local teleportButton = createButton(scrollingFrame, UDim2.new(0.1, 0, 0, 0), UDim2.new(0.35, -10, 0, 40), "Teleports", Color3.fromRGB(80, 80, 80), Color3.fromRGB(255, 255, 255))
+local ammoHackButton = createButton(scrollingFrame, UDim2.new(0.55, 10, 0, 0), UDim2.new(0.35, -10, 0, 40), "AmmoHack", Color3.fromRGB(80, 80, 80), Color3.fromRGB(255, 255, 255))
+local hitboxButton = createButton(scrollingFrame, UDim2.new(0.1, 0, 0, 50), UDim2.new(0.8, 0, 0, 40), "Hitbox Expander", Color3.fromRGB(80, 80, 80), Color3.fromRGB(255, 255, 255))
+local corArmorButton = createButton(scrollingFrame, UDim2.new(0.1, 0, 0, 100), UDim2.new(0.35, -10, 0, 40), "CorArmor", Color3.fromRGB(80, 80, 80), Color3.fromRGB(255, 255, 255))
+local radioSpamButton = createButton(scrollingFrame, UDim2.new(0.55, 10, 0, 100), UDim2.new(0.35, -10, 0, 40), "RadioSpam", Color3.fromRGB(80, 80, 80), Color3.fromRGB(255, 255, 255))
+local aimEspButton = createButton(scrollingFrame, UDim2.new(0.1, 0, 0, 150), UDim2.new(0.8, 0, 0, 40), "Aim&Esp", Color3.fromRGB(80, 80, 80), Color3.fromRGB(255, 255, 255))
 
-        -- Создание обводки при добавлении персонажа
-        createHighlight(character)
+h.Parent = b
+h.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+h.Position = UDim2.new(0.5, -100, 1, -40)
+h.Size = UDim2.new(0, 200, 0, 30)
+h.Text = "Version 1.1"
+h.TextColor3 = Color3.fromRGB(200, 200, 200)
+h.Font = Enum.Font.SourceSans
+h.TextSize = 18
+h.TextXAlignment = Enum.TextXAlignment.Center
 
-        -- Обновление текста здоровья и обводки
-        local function updateESP()
-            if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-                local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-                local health = humanoid.Health
-                healthLabel.Text = "HP: " .. math.floor(health)
+local isFrozen = false
+local defaultSpeed = 16
+local speed = defaultSpeed
+local moveConnection
 
-                -- Обновление цвета и прозрачности Highlight
-                local highlight = character:FindFirstChild("ESPHighlight")
-                if highlight then
-                    highlight.FillColor = Color3.fromRGB(75, 0, 130)  -- Темно-фиолетовый цвет
+local function toggleFreeze()
+    local character = LocalPlayer.Character
+    if not character then return end
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoidRootPart and humanoid then
+        if not isFrozen then
+            humanoidRootPart.Anchored = true
+            moveConnection = l.RenderStepped:Connect(function()
+                if isFrozen then
+                    humanoidRootPart.CFrame = humanoidRootPart.CFrame + (humanoid.MoveDirection * speed / 60)
                 end
-            end
+            end)
+            isFrozen = true
+            e.Text = "Unfreeze"
+        else
+            humanoidRootPart.Anchored = false
+            humanoid.WalkSpeed = defaultSpeed
+            isFrozen = false
+            e.Text = "Freeze"
+            if moveConnection then moveConnection:Disconnect() end
         end
-
-        -- Обновляем текст и цвет с частотой 10 раз в секунду
-        local updateConnection = RunService.RenderStepped:Connect(function(step)
-            if step >= 0.1 then
-                updateESP()
-            end
-        end)
-
-        -- Убедитесь, что соединение отключено при удалении персонажа
-        player.CharacterRemoving:Connect(function()
-            if updateConnection then
-                updateConnection:Disconnect()
-            end
-        end)
-
-        updateESP()
-    end
-
-    if player.Character then
-        onCharacterAdded(player.Character)
-    end
-    player.CharacterAdded:Connect(onCharacterAdded)
-end
-
-for _, player in pairs(Players:GetPlayers()) do
-    if player ~= localPlayer then
-        createESP(player)
     end
 end
 
-Players.PlayerAdded:Connect(createESP)
+local function updateSpeed()
+    local newSpeed = tonumber(g.Text)
+    if newSpeed and newSpeed > 0 then
+        speed = newSpeed
+        f.Text = "Speed: " .. tostring(speed)
+    else
+        g.Text = tostring(speed)
+    end
+end
+
+g.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        updateSpeed()
+    end
+end)
+
+local dragging, dragStart, startPos
+local dragConnection, changeConnection
+
+local function updateDrag(input)
+    local delta = input.Position - dragStart
+    b.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+b.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = b.Position
+        changeConnection = input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+                if changeConnection then changeConnection:Disconnect() end
+            end
+        end)
+    end
+end)
+
+b.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        updateDrag(input)
+    end
+end)
+
+c.MouseButton1Click:Connect(function()
+    b.Visible = not b.Visible
+end)
+
+d.MouseButton1Click:Connect(function()
+    b.Visible = false
+end)
+
+e.MouseButton1Click:Connect(function()
+    toggleFreeze()
+end)
+
+teleportButton.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ogurcik222/Tph.VR.Sc/refs/heads/main/teleporkana.lua"))()
+end)
+
+ammoHackButton.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ogurcik222/Ammo.Vr.SC/refs/heads/main/Ammocheatscript.lua"))()
+end)
+
+hitboxButton.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Vcsk/RobloxScripts/main/HitboxExpander.lua"))()
+end)
+
+corArmorButton.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ogurcik222/CorArmorAN-Sc/refs/heads/main/CorArmor.lua"))()
+end)
+
+radioSpamButton.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ogurcik222/Radiochat-spam.vrk/refs/heads/main/radiospam.lua"))()
+end)
+
+aimEspButton.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubRivals"))()
+end)
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+    b.Visible = true
+end)
