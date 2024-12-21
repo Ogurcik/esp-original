@@ -52,7 +52,7 @@ TabHolder.Position = UDim2.new(0, 0, 0, 40)
 TabHolder.BackgroundTransparency = 1
 TabHolder.Parent = MainFrame
 
-local Tabs = {"Main", "Other", "Settings"}
+local Tabs = {"Main", "Other", "Info"}
 local Buttons = {}
 
 local TotalTabs = #Tabs
@@ -102,7 +102,7 @@ ContentFrames["Main"].Visible = true
 local function CreateButton(parent, text, scriptUrl)
     local Button = Instance.new("TextButton")
     Button.Size = UDim2.new(0, 160, 0, 40)
-    Button.Position = UDim2.new(0.5, -80, 0, (#parent:GetChildren() - 1) * 60)
+    Button.Position = UDim2.new(0.5, -80, 0, (#parent:GetChildren() - 1) * 50)
     Button.Text = text
     Button.Font = Enum.Font.Gotham
     Button.TextSize = 18
@@ -128,7 +128,7 @@ CreateButton(ContentFrames["Other"], "Aim$Esp", "https://raw.githubusercontent.c
 CreateButton(ContentFrames["Other"], "Fly V3", "https://rawscripts.net/raw/Universal-Script-Fly-v3-13879")
 CreateButton(ContentFrames["Other"], "Dex", "https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua")
 
-local SettingsFrame = ContentFrames["Settings"]
+local SettingsFrame = ContentFrames["Info"]
 local SettingsText = Instance.new("TextLabel")
 SettingsText.Size = UDim2.new(1, 0, 0, 40)
 SettingsText.Text = "Made by P.W.Q"
@@ -185,13 +185,74 @@ Buttons["Other"].MouseButton1Click:Connect(function()
     Buttons["Other"].BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 end)
 
-Buttons["Settings"].MouseButton1Click:Connect(function()
+Buttons["Info"].MouseButton1Click:Connect(function()
     for _, frame in pairs(ContentFrames) do
         frame.Visible = false
     end
-    ContentFrames["Settings"].Visible = true
+    ContentFrames["Info"].Visible = true
     for _, button in pairs(Buttons) do
         button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     end
-    Buttons["Settings"].BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    Buttons["Info"].BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+end)
+
+local dragging, dragInput, dragStart, startPos
+local function update(input)
+    local delta = input.Position - dragStart
+    MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+MainFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+MainFrame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
+        update(input)
+    end
+end)
+
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Size = UDim2.new(0, 30, 0, 30)
+minimizeButton.Position = UDim2.new(1, -40, 0, 10)
+minimizeButton.Text = "-"
+minimizeButton.Font = Enum.Font.Gotham
+minimizeButton.TextSize = 22
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+minimizeButton.BorderSizePixel = 0
+minimizeButton.Parent = MainFrame
+
+minimizeButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
+end)
+
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -70, 0, 10)
+closeButton.Text = "X"
+closeButton.Font = Enum.Font.Gotham
+closeButton.TextSize = 22
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+closeButton.BorderSizePixel = 0
+closeButton.Parent = MainFrame
+
+closeButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
 end)
