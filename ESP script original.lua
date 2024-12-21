@@ -102,7 +102,7 @@ ContentFrames["Main"].Visible = true
 local function CreateButton(parent, text, scriptUrl)
     local Button = Instance.new("TextButton")
     Button.Size = UDim2.new(0, 160, 0, 40)
-    Button.Position = UDim2.new(0.5, -80, 0, (#parent:GetChildren() - 1) * 50)
+    Button.Position = UDim2.new(0.5, -80, 0, (#parent:GetChildren() - 1) * 60)
     Button.Text = text
     Button.Font = Enum.Font.Gotham
     Button.TextSize = 18
@@ -128,15 +128,15 @@ CreateButton(ContentFrames["Other"], "Aim$Esp", "https://raw.githubusercontent.c
 CreateButton(ContentFrames["Other"], "Fly V3", "https://rawscripts.net/raw/Universal-Script-Fly-v3-13879")
 CreateButton(ContentFrames["Other"], "Dex", "https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua")
 
-local InfoFrame = ContentFrames["Info"]
-local InfoText = Instance.new("TextLabel")
-InfoText.Size = UDim2.new(1, 0, 0, 40)
-InfoText.Text = "Made by P.W.Q"
-InfoText.Font = Enum.Font.Gotham
-InfoText.TextSize = 18
-InfoText.TextColor3 = Color3.fromRGB(255, 255, 255)
-InfoText.BackgroundTransparency = 1
-InfoText.Parent = InfoFrame
+local SettingsFrame = ContentFrames["Info"]
+local SettingsText = Instance.new("TextLabel")
+SettingsText.Size = UDim2.new(1, 0, 0, 40)
+SettingsText.Text = "Made by P.W.Q"
+SettingsText.Font = Enum.Font.Gotham
+SettingsText.TextSize = 18
+SettingsText.TextColor3 = Color3.fromRGB(255, 255, 255)
+SettingsText.BackgroundTransparency = 1
+SettingsText.Parent = SettingsFrame
 
 local VersionText = Instance.new("TextLabel")
 VersionText.Size = UDim2.new(1, 0, 0, 40)
@@ -146,7 +146,7 @@ VersionText.TextSize = 18
 VersionText.TextColor3 = Color3.fromRGB(255, 255, 255)
 VersionText.BackgroundTransparency = 1
 VersionText.Position = UDim2.new(0, 0, 0, 50)
-VersionText.Parent = InfoFrame
+VersionText.Parent = SettingsFrame
 
 local DiscordLinkButton = Instance.new("TextButton")
 DiscordLinkButton.Size = UDim2.new(0, 200, 0, 40)
@@ -157,7 +157,7 @@ DiscordLinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 DiscordLinkButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 DiscordLinkButton.BorderSizePixel = 0
 DiscordLinkButton.Position = UDim2.new(0.5, -100, 0, 100)
-DiscordLinkButton.Parent = InfoFrame
+DiscordLinkButton.Parent = SettingsFrame
 
 DiscordLinkButton.MouseButton1Click:Connect(function()
     setclipboard("https://discord.gg/BRkQ8naxfV")
@@ -217,35 +217,39 @@ end)
 
 MainFrame.InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        dragInput = input
+        if dragging then
+            update(input)
+        end
     end
 end)
 
-game:GetService("UserInputService").InputChanged:Connect(function(input)
-    if dragging and input == dragInput then
-        update(input)
-    end
-end)
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Size = UDim2.new(0, 40, 0, 40)
+minimizeButton.Position = UDim2.new(1, -40, 0, 0)
+minimizeButton.Text = "-"
+minimizeButton.Font = Enum.Font.Gotham
+minimizeButton.TextSize = 18
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+minimizeButton.BorderSizePixel = 0
+minimizeButton.Parent = MainFrame
 
-local minimize = false
-local MinimizeButton = Instance.new("TextButton")
-MinimizeButton.Size = UDim2.new(0, 40, 0, 40)
-MinimizeButton.Position = UDim2.new(1, -40, 0, 0)
-MinimizeButton.Text = "-"
-MinimizeButton.Font = Enum.Font.GothamBold
-MinimizeButton.TextSize = 22
-MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-MinimizeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-MinimizeButton.BorderSizePixel = 0
-MinimizeButton.Parent = Title
+local function minimize()
+    MainFrame.Size = UDim2.new(0, 420, 0, 40)
+    Title.Size = UDim2.new(1, 0, 0, 40)
+    Title.Text = "Virus Roleplay V1.1"
+end
 
-MinimizeButton.MouseButton1Click:Connect(function()
-    minimize = not minimize
-    if minimize then
-        MainFrame.Size = UDim2.new(0, 420, 0, 50)
-        Title.TextSize = 18
+local function restore()
+    MainFrame.Size = UDim2.new(0, 420, 0, 360)
+    Title.Size = UDim2.new(1, 0, 0, 40)
+    Title.Text = "Virus Roleplay V1.1"
+end
+
+minimizeButton.MouseButton1Click:Connect(function()
+    if MainFrame.Size.Y.Offset == 40 then
+        restore()
     else
-        MainFrame.Size = UDim2.new(0, 420, 0, 360)
-        Title.TextSize = 22
+        minimize()
     end
 end)
