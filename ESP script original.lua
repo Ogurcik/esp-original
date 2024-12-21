@@ -128,39 +128,59 @@ CreateButton(ContentFrames["Other"], "Aim$Esp", "https://raw.githubusercontent.c
 CreateButton(ContentFrames["Other"], "Fly V3", "https://rawscripts.net/raw/Universal-Script-Fly-v3-13879")
 CreateButton(ContentFrames["Other"], "Dex", "https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua")
 
-local Language = "English"
+local SettingsFrame = ContentFrames["Settings"]
+local SettingsText = Instance.new("TextLabel")
+SettingsText.Size = UDim2.new(1, 0, 0, 40)
+SettingsText.Text = "Made by P.W.Q"
+SettingsText.Font = Enum.Font.Gotham
+SettingsText.TextSize = 18
+SettingsText.TextColor3 = Color3.fromRGB(255, 255, 255)
+SettingsText.BackgroundTransparency = 1
+SettingsText.Parent = SettingsFrame
 
-local function SetLanguage(lang)
-    if lang == "English" then
-        Title.Text = "Virus Roleplay V1.1"
-        Buttons["Main"].Text = "Main"
-        Buttons["Other"].Text = "Other"
-        Buttons["Settings"].Text = "Settings"
-        ContentFrames["Settings"].TextLabel.Text = "Made by P.W.Q"
-        ContentFrames["Settings"].VersionText.Text = "Version 1.1"
-        ContentFrames["Settings"].LanguageButton.Text = "Select language: English / Russian"
-        ContentFrames["Settings"].DiscordText.Text = "If you want to know news about the script and P.W.Q, visit our P.W.Q Discord server"
-        ContentFrames["Settings"].CopyButton.Text = "Copy link of P.W.Q Server"
-    elseif lang == "Russian" then
-        Title.Text = "Вирус РП V1.1"
-        Buttons["Main"].Text = "Главная"
-        Buttons["Other"].Text = "Другое"
-        Buttons["Settings"].Text = "Настройки"
-        ContentFrames["Settings"].TextLabel.Text = "Сделано P.W.Q"
-        ContentFrames["Settings"].VersionText.Text = "Версия 1.1"
-        ContentFrames["Settings"].LanguageButton.Text = "Выберите язык: Английский / Русский"
-        ContentFrames["Settings"].DiscordText.Text = "Если вы хотите узнать новости о скрипте и P.W.Q, переходите на наш сервер P.W.Q в Discord"
-        ContentFrames["Settings"].CopyButton.Text = "Скопировать ссылку на сервер P.W.Q"
-    end
-end
+local VersionText = Instance.new("TextLabel")
+VersionText.Size = UDim2.new(1, 0, 0, 40)
+VersionText.Text = "Version 1.1"
+VersionText.Font = Enum.Font.Gotham
+VersionText.TextSize = 18
+VersionText.TextColor3 = Color3.fromRGB(255, 255, 255)
+VersionText.BackgroundTransparency = 1
+VersionText.Position = UDim2.new(0, 0, 0, 50)
+VersionText.Parent = SettingsFrame
 
-CreateButton(ContentFrames["Settings"], "Select language: English / Russian", function()
-    if Language == "English" then
-        Language = "Russian"
-        SetLanguage("Russian")
+local LanguageButton = Instance.new("TextButton")
+LanguageButton.Size = UDim2.new(0, 200, 0, 40)
+LanguageButton.Text = "Select language: English"
+LanguageButton.Font = Enum.Font.Gotham
+LanguageButton.TextSize = 18
+LanguageButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+LanguageButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+LanguageButton.BorderSizePixel = 0
+LanguageButton.Position = UDim2.new(0.5, -100, 0, 100)
+LanguageButton.Parent = SettingsFrame
+
+local DiscordLinkButton = Instance.new("TextButton")
+DiscordLinkButton.Size = UDim2.new(0, 200, 0, 40)
+DiscordLinkButton.Text = "Copy link of P.W.Q Server"
+DiscordLinkButton.Font = Enum.Font.Gotham
+DiscordLinkButton.TextSize = 18
+DiscordLinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DiscordLinkButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+DiscordLinkButton.BorderSizePixel = 0
+DiscordLinkButton.Position = UDim2.new(0.5, -100, 0, 150)
+DiscordLinkButton.Parent = SettingsFrame
+
+DiscordLinkButton.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/BRkQ8naxfV")
+end)
+
+LanguageButton.MouseButton1Click:Connect(function()
+    if LanguageButton.Text == "Select language: English" then
+        LanguageButton.Text = "Выбрать язык: Русский"
+        -- Добавьте перевод всех надписей на русский здесь
     else
-        Language = "English"
-        SetLanguage("English")
+        LanguageButton.Text = "Select language: English"
+        -- Возврат к английскому
     end
 end)
 
@@ -169,6 +189,10 @@ Buttons["Main"].MouseButton1Click:Connect(function()
         frame.Visible = false
     end
     ContentFrames["Main"].Visible = true
+    for _, button in pairs(Buttons) do
+        button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    end
+    Buttons["Main"].BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 end)
 
 Buttons["Other"].MouseButton1Click:Connect(function()
@@ -176,6 +200,10 @@ Buttons["Other"].MouseButton1Click:Connect(function()
         frame.Visible = false
     end
     ContentFrames["Other"].Visible = true
+    for _, button in pairs(Buttons) do
+        button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    end
+    Buttons["Other"].BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 end)
 
 Buttons["Settings"].MouseButton1Click:Connect(function()
@@ -183,6 +211,10 @@ Buttons["Settings"].MouseButton1Click:Connect(function()
         frame.Visible = false
     end
     ContentFrames["Settings"].Visible = true
+    for _, button in pairs(Buttons) do
+        button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    end
+    Buttons["Settings"].BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 end)
 
 local dragging, dragInput, dragStart, startPos
@@ -215,5 +247,3 @@ game:GetService("UserInputService").InputChanged:Connect(function(input)
         update(input)
     end
 end)
-
-SetLanguage(Language)
