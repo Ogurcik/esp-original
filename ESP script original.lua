@@ -128,15 +128,15 @@ CreateButton(ContentFrames["Other"], "Aim$Esp", "https://raw.githubusercontent.c
 CreateButton(ContentFrames["Other"], "Fly V3", "https://rawscripts.net/raw/Universal-Script-Fly-v3-13879")
 CreateButton(ContentFrames["Other"], "Dex", "https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua")
 
-local SettingsFrame = ContentFrames["Info"]
-local SettingsText = Instance.new("TextLabel")
-SettingsText.Size = UDim2.new(1, 0, 0, 40)
-SettingsText.Text = "Made by P.W.Q"
-SettingsText.Font = Enum.Font.Gotham
-SettingsText.TextSize = 18
-SettingsText.TextColor3 = Color3.fromRGB(255, 255, 255)
-SettingsText.BackgroundTransparency = 1
-SettingsText.Parent = SettingsFrame
+local InfoFrame = ContentFrames["Info"]
+local InfoText = Instance.new("TextLabel")
+InfoText.Size = UDim2.new(1, 0, 0, 40)
+InfoText.Text = "Made by P.W.Q"
+InfoText.Font = Enum.Font.Gotham
+InfoText.TextSize = 18
+InfoText.TextColor3 = Color3.fromRGB(255, 255, 255)
+InfoText.BackgroundTransparency = 1
+InfoText.Parent = InfoFrame
 
 local VersionText = Instance.new("TextLabel")
 VersionText.Size = UDim2.new(1, 0, 0, 40)
@@ -146,7 +146,7 @@ VersionText.TextSize = 18
 VersionText.TextColor3 = Color3.fromRGB(255, 255, 255)
 VersionText.BackgroundTransparency = 1
 VersionText.Position = UDim2.new(0, 0, 0, 50)
-VersionText.Parent = SettingsFrame
+VersionText.Parent = InfoFrame
 
 local DiscordLinkButton = Instance.new("TextButton")
 DiscordLinkButton.Size = UDim2.new(0, 200, 0, 40)
@@ -157,7 +157,7 @@ DiscordLinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 DiscordLinkButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 DiscordLinkButton.BorderSizePixel = 0
 DiscordLinkButton.Position = UDim2.new(0.5, -100, 0, 100)
-DiscordLinkButton.Parent = SettingsFrame
+DiscordLinkButton.Parent = InfoFrame
 
 DiscordLinkButton.MouseButton1Click:Connect(function()
     setclipboard("https://discord.gg/BRkQ8naxfV")
@@ -227,32 +227,25 @@ game:GetService("UserInputService").InputChanged:Connect(function(input)
     end
 end)
 
-local minimizeButton = Instance.new("TextButton")
-minimizeButton.Size = UDim2.new(0, 30, 0, 30)
-minimizeButton.Position = UDim2.new(1, -40, 0, 10)
-minimizeButton.Text = "-"
-minimizeButton.Font = Enum.Font.Gotham
-minimizeButton.TextSize = 22
-minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-minimizeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-minimizeButton.BorderSizePixel = 0
-minimizeButton.Parent = MainFrame
+local minimize = false
+local MinimizeButton = Instance.new("TextButton")
+MinimizeButton.Size = UDim2.new(0, 40, 0, 40)
+MinimizeButton.Position = UDim2.new(1, -40, 0, 0)
+MinimizeButton.Text = "-"
+MinimizeButton.Font = Enum.Font.GothamBold
+MinimizeButton.TextSize = 22
+MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+MinimizeButton.BorderSizePixel = 0
+MinimizeButton.Parent = Title
 
-minimizeButton.MouseButton1Click:Connect(function()
-    MainFrame.Visible = not MainFrame.Visible
-end)
-
-local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0, 30, 0, 30)
-closeButton.Position = UDim2.new(1, -70, 0, 10)
-closeButton.Text = "X"
-closeButton.Font = Enum.Font.Gotham
-closeButton.TextSize = 22
-closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-closeButton.BorderSizePixel = 0
-closeButton.Parent = MainFrame
-
-closeButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
+MinimizeButton.MouseButton1Click:Connect(function()
+    minimize = not minimize
+    if minimize then
+        MainFrame.Size = UDim2.new(0, 420, 0, 50)
+        Title.TextSize = 18
+    else
+        MainFrame.Size = UDim2.new(0, 420, 0, 360)
+        Title.TextSize = 22
+    end
 end)
