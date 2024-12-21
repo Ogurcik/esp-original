@@ -102,7 +102,7 @@ ContentFrames["Main"].Visible = true
 local function CreateButton(parent, text, scriptUrl)
     local Button = Instance.new("TextButton")
     Button.Size = UDim2.new(0, 160, 0, 40)
-    Button.Position = UDim2.new(0.5, -80, 0, (#parent:GetChildren() - 1) * 60)
+    Button.Position = UDim2.new(0.5, -80, 0, (#parent:GetChildren() - 1) * 50)
     Button.Text = text
     Button.Font = Enum.Font.Gotham
     Button.TextSize = 18
@@ -127,7 +127,6 @@ CreateButton(ContentFrames["Main"], "AmmoHack", "https://raw.githubusercontent.c
 CreateButton(ContentFrames["Other"], "Aim$Esp", "https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubRivals")
 CreateButton(ContentFrames["Other"], "Fly V3", "https://rawscripts.net/raw/Universal-Script-Fly-v3-13879")
 CreateButton(ContentFrames["Other"], "Dex", "https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua")
-
 local SettingsFrame = ContentFrames["Info"]
 local SettingsText = Instance.new("TextLabel")
 SettingsText.Size = UDim2.new(1, 0, 0, 40)
@@ -217,39 +216,32 @@ end)
 
 MainFrame.InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        if dragging then
-            update(input)
-        end
+        dragInput = input
     end
 end)
 
-local minimizeButton = Instance.new("TextButton")
-minimizeButton.Size = UDim2.new(0, 40, 0, 40)
-minimizeButton.Position = UDim2.new(1, -40, 0, 0)
-minimizeButton.Text = "-"
-minimizeButton.Font = Enum.Font.Gotham
-minimizeButton.TextSize = 18
-minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-minimizeButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-minimizeButton.BorderSizePixel = 0
-minimizeButton.Parent = MainFrame
-
-local function minimize()
-    MainFrame.Size = UDim2.new(0, 420, 0, 40)
-    Title.Size = UDim2.new(1, 0, 0, 40)
-    Title.Text = "Virus Roleplay V1.1"
-end
-
-local function restore()
-    MainFrame.Size = UDim2.new(0, 420, 0, 360)
-    Title.Size = UDim2.new(1, 0, 0, 40)
-    Title.Text = "Virus Roleplay V1.1"
-end
-
-minimizeButton.MouseButton1Click:Connect(function()
-    if MainFrame.Size.Y.Offset == 40 then
-        restore()
-    else
-        minimize()
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
+        update(input)
     end
 end)
+
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0, 30, 0, 30)
+toggleButton.Size = UDim2.new(0, 30, 0, 30)
+toggleButton.Position = UDim2.new(1, -40, 0, 10)
+toggleButton.Text = "X"
+toggleButton.Font = Enum.Font.Gotham
+toggleButton.TextSize = 18
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+toggleButton.BorderSizePixel = 0
+toggleButton.Parent = MainFrame
+
+toggleButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+local UICornerToggle = Instance.new("UICorner")
+UICornerToggle.CornerRadius = UDim.new(0, 6)
+UICornerToggle.Parent = toggleButton
