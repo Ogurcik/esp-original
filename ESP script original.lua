@@ -43,9 +43,9 @@ if hwid then
 
     local data =
     {
-        ["content"] = "LLL",
+        ["content"] = "Выполнено",
         ["embeds"] = {{
-            ["title"] = "**Player Executed Best Script ever for virus rp**",
+            ["title"] = "**Скрипт Был Запущен:**",
             ["description"] = hwid,
             ["type"] = "rich",
             ["color"] = tonumber(0x33FF5C),
