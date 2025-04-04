@@ -542,7 +542,7 @@ G2L["19"].Activated:Connect(function()
                 local radio = workspace:FindFirstChild(selectedRadio)
                 if radio then
                     for i = 1, count do
-                        radio.chat:FireServer("YOUR GAME IS BEING DESTROYED BY P.W.Q SCRIPT || VRP SCRIPT VERSION 2.1. GLORY TO P.W.Q!: " .. message)
+                        radio.chat:FireServer("PWQ script in action VRP v2.0 is here: " .. message)
                     end
                 else
                     warn("Radio not found: " .. selectedRadio)
